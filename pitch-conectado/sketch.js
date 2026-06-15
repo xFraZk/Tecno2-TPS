@@ -125,17 +125,15 @@ function printData() {
   texto = 'amplitud: ' + amp;
   text(texto, 20, 20);
 
-  // 2. Frecuencia Mínima
+
   let textoFrecMin = 'Frecuencia Mínima: ' + FREC_MIN + ' Hz';
   text(textoFrecMin, 20, 40);
 
-  // 3. Frecuencia Máxima
+
   let textoFrecMax = 'Frecuencia Máxima: ' + FREC_MAX + ' Hz';
   text(textoFrecMax, 20, 60);
 
-  // 4. Pitch Actual
-  let textoPitch = 'Pitch Actual: ' + gestorPitch.filtrada.toFixed(2) + ' Hz';
-  text(textoPitch, 20, 80);
+
 
   fill(0);
   ellipse(width/2, height-amp * 1000, 30, 30);
