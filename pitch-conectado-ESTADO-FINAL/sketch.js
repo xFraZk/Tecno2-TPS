@@ -1,10 +1,10 @@
 //------ Configuracion ------
-let AMP_MIN = 0.03; 
-let AMP_MAX = 1; 
+let AMP_MIN = 0.08; 
+let AMP_MAX = 0.4; 
 let AMORTIGUACION = 0.5;
 
-let FREC_MIN = 80;   
-let FREC_MAX = 800;
+let FREC_MIN = 700;   
+let FREC_MAX = 882;
 let IMPRIMIR = false;
 
 
@@ -17,12 +17,12 @@ let estado = "velocidad";
 
 
 let marca;
-let tiempoLimiteVelocidad = 3000;
-let tiempoLimieteLento = 3000;
-let tiempoLimieteReiniciar = 3000;
-let tiempoLimieteAvanzar = 3000;
-let tiempoLimieteColor = 3000;
-let tiempoLimieteFin = 3000;
+let tiempoLimiteVelocidad = 7000;
+let tiempoLimieteLento = 7000;
+let tiempoLimieteReiniciar = 7000;
+let tiempoLimieteAvanzar = 7000;
+let tiempoLimieteColor = 7000;
+let tiempoLimieteFin = 7000;
 
 
 
@@ -33,7 +33,9 @@ let escalaNoise;
 
 // Paleta
 let p; 
+let p2;
 let img; 
+let img2;
 
 let elColor;
 let colorInicial;
@@ -51,23 +53,25 @@ let antesHabiaSonido = false;
 //------ GESTOR ------
 let gestorAmp;
 let gestorPitch;
-
+                                                                                     
 
 let activo = false; 
 
 
 function preload() {
-  img = loadImage("img/obra_3.jpg");
+  img = loadImage("img/obra_1.jpg");
+  img2 = loadImage("img/obra_4.jpg");
 
 }
 
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-   background(255);
-
+   background(0);
+   fill(255)
+  
   p = new Paleta(img);
-
+  p2 = new Paleta(img2);
 
   
   for (let i = 0; i < 10; i++) {
@@ -92,7 +96,9 @@ function setup() {
 }
 
 function draw() {
-
+  
+texto = 'Estado: ' + estado;
+  text(texto, 20, 20);
   gestorAmp.actualizar(mic.getLevel());
 
   amp = gestorAmp.filtrada;
@@ -101,7 +107,7 @@ function draw() {
  let empezoElSonido = haySonido && !antesHabiaSonido; //EVENTO
  let finDelSonido = !haySonido && antesHabiaSonido;
  
-if(activo) {
+
 if(estado == "velocidad") {
  
 
@@ -113,9 +119,9 @@ if(estado == "velocidad") {
     
 for (let i = 0; i < 10; i++) {
      caminante[i].actualizar(gestorPitch.filtrada);
- caminante[i].dibujar();
-  caminante[i].mover();
-    caminante[i].comprobarLimites();
+     caminante[i].dibujar();
+     caminante[i].mover();
+     caminante[i].comprobarLimites();
     }
   }
 
@@ -165,10 +171,10 @@ for (let i = 0; i < 10; i++) {
  } else if (estado == "color") {
 
       if (empezoElSonido) { 
-          elColor = color(random(255), random(255), random(255));
           for (let i = 0; i < 10; i++) {
-              caminante[i].c = elColor; 
-          }
+    caminante[i] = new Caminante(p2.darUnColor());
+
+  }
       }
 
       if (haySonido) { 
@@ -203,7 +209,7 @@ for (let i = 0; i < 10; i++) {
 
   } else if (estado == "reiniciar") {
       
-      background(225); 
+      background(0); 
 
       caminante = []; 
       
@@ -216,15 +222,7 @@ for (let i = 0; i < 10; i++) {
 
   } 
 console.log(estado)
-} else {
-      for (let i = 0; i < 10; i++) {
-          caminante[i].vel = 2; 
-          caminante[i].dibujar();
-          caminante[i].mover();
-          caminante[i].comprobarLimites();
-      }
-      
-  }
+ 
  
   
    if (IMPRIMIR) {
@@ -232,8 +230,8 @@ console.log(estado)
   }
   
   antesHabiaSonido = haySonido; 
-}
 
+}
 
 //------------------------ SONIDO ------------------------
 function printData() {
@@ -301,17 +299,6 @@ function getPitch() {
 
 function keyPressed() {
   
-  if (key == 'a' || key == 'A') {
-      activo = !activo; 
-      
-      if (activo) {
-          estado = "velocidad";
-          marca = millis();
-          console.log("Activo");
-      } else {
-          console.log("Activo desactivada");
-      }
-  }
 
   if (key == 'o' || key == 'O') {
     background(255);
